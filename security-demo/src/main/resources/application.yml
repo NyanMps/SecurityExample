@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/security_example?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+    username: loli
+    password: 12358
+  session:
+    store-type: none
+
+
+# security.basic.enabled \u5728 2.x \u88AB\u5E9F\u5F03\uFF0C\u8BF7\u4F7F\u7528 exclude \u7684\u65B9\u5F0F\u8FDB\u884C\u6392\u9664
