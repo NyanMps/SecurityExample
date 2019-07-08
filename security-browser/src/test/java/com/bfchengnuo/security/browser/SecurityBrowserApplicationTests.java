@@ -1,4 +1,4 @@
-package com.bfchengnuo.security.securitybrowser;
+package com.bfchengnuo.security.browser;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

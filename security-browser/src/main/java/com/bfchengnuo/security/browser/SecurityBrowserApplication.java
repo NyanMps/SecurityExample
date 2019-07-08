@@ -1,4 +1,4 @@
-package com.bfchengnuo.security.securitybrowser;
+package com.bfchengnuo.security.browser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

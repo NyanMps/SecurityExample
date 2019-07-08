@@ -1,6 +1,6 @@
 package com.bfchengnuo.security;
 
-import com.bfchengnuo.secunity.securitydemo.SecurityDemoApplication;
+import com.bfchengnuo.secunity.demo.SecurityDemoApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +34,11 @@ public class HelloTest {
     public void testQueryUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/user")
+                        .param("userName", "skye")
+                        .param("page", "2")
+                        .param("size", "20")
+                        .param("sort", "name,desc")
+                        .param("sort", "age,asc")
                         .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 // 将结果进行 json 解析，如果是集合并且长度为 3 则通过

@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.securitydemo;
+package com.bfchengnuo.secunity.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
