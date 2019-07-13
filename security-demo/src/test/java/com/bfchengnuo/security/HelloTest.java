@@ -32,7 +32,7 @@ public class HelloTest {
 
     @Test
     public void testQueryUser() throws Exception {
-        mockMvc.perform(
+        String content = mockMvc.perform(
                 MockMvcRequestBuilders.get("/user")
                         .param("userName", "skye")
                         .param("page", "2")
@@ -42,6 +42,23 @@ public class HelloTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 // 将结果进行 json 解析，如果是集合并且长度为 3 则通过
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(3));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(3))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println(content);
+    }
+
+    @Test
+    public void testCreate() throws Exception {
+        String userJson = "{\"id\": \"3\", \"userName\":\"skye\",\"pwd\":\"password\"}";
+        String content = mockMvc.perform(
+                MockMvcRequestBuilders.post("/user")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(userJson))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(3))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println(content);
     }
 }

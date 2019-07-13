@@ -15,3 +15,9 @@ By：imooc
 使用 SpringMVC 开发 RESTful API 服务/接口
 
 使用 MockMvc 进行接口的测试，使用 Swagger 进行文档的生成。
+
+使用 @jsonView 多视图方式来选择性的返回实体中的属性。
+
+时间的转换（时间戳默认可以被识别和转换）
+
+请求参数的校验（@Valid），自定义校验器。
