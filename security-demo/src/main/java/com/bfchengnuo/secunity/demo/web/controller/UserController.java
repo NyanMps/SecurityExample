@@ -21,7 +21,8 @@ import java.util.Objects;
  *
  * @author Created by 冰封承諾Andy on 2019/7/8.
  */
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserController {
     @GetMapping()
     @JsonView(User.UserSimpleView.class)

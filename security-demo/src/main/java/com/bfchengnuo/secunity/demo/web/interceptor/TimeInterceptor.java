@@ -42,8 +42,11 @@ public class TimeInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         System.out.println("TimeInterceptor afterCompletion");
         long start = (long) request.getAttribute("start");
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        String name = handlerMethod.getMethod().getName();
+        String name = "not HandlerMethod";
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            name = handlerMethod.getMethod().getName();
+        }
         System.out.println("TimeInterceptor-" + name + "-耗时：" + (System.currentTimeMillis() - start));
     }
 }
