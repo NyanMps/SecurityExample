@@ -26,9 +26,9 @@ public class UserController {
     @GetMapping()
     @JsonView(User.UserSimpleView.class)
     public List<User> query(@PageableDefault(size = 11, page = 1) Pageable pageable) {
-        System.out.println(pageable.getPageNumber());
-        System.out.println(pageable.getPageSize());
-        System.out.println(pageable.getSort());
+        System.out.println("PageNumber:" + pageable.getPageNumber());
+        System.out.println("PageSize:" + pageable.getPageSize());
+        System.out.println("Sort:" + pageable.getSort());
 
         List<User> list = new ArrayList<>();
         list.add(new User());
