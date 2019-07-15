@@ -23,3 +23,4 @@ By：imooc
 - 请求参数的校验（@Valid），自定义校验器。
 - 统一异常处理。
 - 拦截器与过滤器。
+- 使用 WireMock 伪造 Restful 数据。
