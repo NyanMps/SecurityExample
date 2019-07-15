@@ -3,14 +3,19 @@ package com.bfchengnuo.secunity.demo.web.config;
 import com.bfchengnuo.secunity.demo.web.filter.TimeFilter;
 import com.bfchengnuo.secunity.demo.web.interceptor.TimeInterceptor;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Web 中常见配置
@@ -44,5 +49,26 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(timeInterceptor);
+    }
+
+    /**
+     * 解决上传文件大于 10M 出现连接重置的问题
+     */
+    @Bean
+    public TomcatServletWebServerFactory tomcatEmbedded() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
+            if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
+                //-1 代表没有限制
+                ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
+            }
+        });
+        return tomcat;
+    }
+
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        // 关于异步调用的一些配置
+        configurer.setDefaultTimeout(TimeUnit.SECONDS.toMillis(5));
     }
 }

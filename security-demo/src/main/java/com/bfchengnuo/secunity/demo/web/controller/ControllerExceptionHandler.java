@@ -22,6 +22,7 @@ public class ControllerExceptionHandler {
     public Map<String, Object> handleRuntimeException(RuntimeException exception) {
         Map<String, Object> result = new HashMap<>();
         result.put("msg", "自定义 " + exception.getMessage());
+        exception.printStackTrace();
         return result;
     }
 }
