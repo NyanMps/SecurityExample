@@ -2,6 +2,7 @@ package com.bfchengnuo.secunity.demo.dto;
 
 import com.bfchengnuo.secunity.demo.validator.MyValidator;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,11 @@ public class User {
 
     @JsonView(UserSimpleView.class)
     @NotBlank(message = "用户名不能为空")
+    @ApiModelProperty("用户名")
     private String userName;
 
     @JsonView(UserDetailView.class)
     @MyValidator
+    @ApiModelProperty("用户密码")
     private String pwd;
 }

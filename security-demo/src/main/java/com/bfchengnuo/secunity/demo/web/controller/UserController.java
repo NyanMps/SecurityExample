@@ -2,6 +2,8 @@ package com.bfchengnuo.secunity.demo.web.controller;
 
 import com.bfchengnuo.secunity.demo.dto.User;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,7 @@ import java.util.Objects;
 public class UserController {
     @GetMapping()
     @JsonView(User.UserSimpleView.class)
+    @ApiOperation(value = "查询用户列表")
     public List<User> query(@PageableDefault(size = 11, page = 1) Pageable pageable) {
         System.out.println("PageNumber:" + pageable.getPageNumber());
         System.out.println("PageSize:" + pageable.getPageSize());
@@ -40,12 +43,14 @@ public class UserController {
 
     @GetMapping("/{id::\\d+}")
     @JsonView(User.UserDetailView.class)
-    public User getInfo(@PathVariable String id) {
+    @ApiOperation(value = "查询单个用户")
+    public User getInfo(@ApiParam("用户ID") @PathVariable String id) {
         return new User("1", "name".concat(id), "pwd");
     }
 
     @PostMapping
     @JsonView(User.UserSimpleView.class)
+    @ApiOperation(value = "新增单个用户")
     public User create(@Valid @RequestBody User user, BindingResult errors) {
         if (errors.hasErrors()) {
             errors.getAllErrors().forEach(error -> {
