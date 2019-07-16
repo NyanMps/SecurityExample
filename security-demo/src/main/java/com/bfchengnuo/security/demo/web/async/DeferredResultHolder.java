@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.demo.web.async;
+package com.bfchengnuo.security.demo.web.async;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

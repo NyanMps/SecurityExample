@@ -1,4 +1,6 @@
-package com.bfchengnuo.secunity.demo.web.filter;
+package com.bfchengnuo.security.demo.web.filter;
+
+import com.bfchengnuo.security.demo.web.config.WebConfig;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -7,7 +9,7 @@ import java.io.IOException;
  * 使用过滤器记录服务请求时间
  *
  * 如有条件，可以使用 @Component 注解，当无法使用 @Component 注解时，
- * 可以参考 {@link com.bfchengnuo.secunity.demo.web.config.WebConfig} 的配置
+ * 可以参考 {@link WebConfig} 的配置
  *
  * @author Created by 冰封承諾Andy on 2019/7/14.
  */

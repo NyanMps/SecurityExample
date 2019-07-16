@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.demo.web.controller;
+package com.bfchengnuo.security.demo.web.controller;
 
 import lombok.Cleanup;
 import org.springframework.util.FileCopyUtils;

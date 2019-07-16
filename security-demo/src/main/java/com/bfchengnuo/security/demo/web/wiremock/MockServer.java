@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.demo.web.wiremock;
+package com.bfchengnuo.security.demo.web.wiremock;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.apache.commons.io.FileUtils;

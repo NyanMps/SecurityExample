@@ -1,6 +1,6 @@
-package com.bfchengnuo.secunity.demo.web.controller;
+package com.bfchengnuo.security.demo.web.controller;
 
-import com.bfchengnuo.secunity.demo.dto.User;
+import com.bfchengnuo.security.demo.dto.User;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

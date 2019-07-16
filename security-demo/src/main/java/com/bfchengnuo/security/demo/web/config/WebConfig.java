@@ -1,7 +1,7 @@
-package com.bfchengnuo.secunity.demo.web.config;
+package com.bfchengnuo.security.demo.web.config;
 
-import com.bfchengnuo.secunity.demo.web.filter.TimeFilter;
-import com.bfchengnuo.secunity.demo.web.interceptor.TimeInterceptor;
+import com.bfchengnuo.security.demo.web.filter.TimeFilter;
+import com.bfchengnuo.security.demo.web.interceptor.TimeInterceptor;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;

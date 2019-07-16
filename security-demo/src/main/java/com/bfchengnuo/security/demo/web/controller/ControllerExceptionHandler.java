@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.demo.web.controller;
+package com.bfchengnuo.security.demo.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,10 +16,10 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class ControllerExceptionHandler {
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(NumberFormatException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> handleRuntimeException(RuntimeException exception) {
+    public Map<String, Object> handleNumberFormatException(NumberFormatException exception) {
         Map<String, Object> result = new HashMap<>();
         result.put("msg", "自定义 " + exception.getMessage());
         exception.printStackTrace();

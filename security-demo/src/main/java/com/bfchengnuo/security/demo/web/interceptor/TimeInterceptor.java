@@ -1,5 +1,6 @@
-package com.bfchengnuo.secunity.demo.web.interceptor;
+package com.bfchengnuo.security.demo.web.interceptor;
 
+import com.bfchengnuo.security.demo.web.config.WebConfig;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * 请注意，MVC 的异常处理优于 afterCompletion，如果进行过异常处理，这里是拿不到异常的。
  *
  * PS：只声明 Component 是没有效果的，
- * 还是要在 {@link com.bfchengnuo.secunity.demo.web.config.WebConfig} 进行配置
+ * 还是要在 {@link WebConfig} 进行配置
  *
  * @author Created by 冰封承諾Andy on 2019/7/14.
  */

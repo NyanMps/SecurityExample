@@ -1,4 +1,4 @@
-package com.bfchengnuo.secunity.demo.validator;
+package com.bfchengnuo.security.demo.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

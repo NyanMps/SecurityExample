@@ -1,6 +1,6 @@
 package com.bfchengnuo.security;
 
-import com.bfchengnuo.secunity.demo.SecurityDemoApplication;
+import com.bfchengnuo.security.demo.SecurityDemoApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

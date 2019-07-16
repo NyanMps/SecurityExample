@@ -1,6 +1,6 @@
-package com.bfchengnuo.secunity.demo.dto;
+package com.bfchengnuo.security.demo.dto;
 
-import com.bfchengnuo.secunity.demo.validator.MyValidator;
+import com.bfchengnuo.security.demo.validator.MyValidator;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
