@@ -1,9 +1,7 @@
 package com.bfchengnuo.security.demo;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -19,9 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  *
  * @author Created by 冰封承諾Andy
  */
-@SpringBootApplication(exclude = {
-        SecurityAutoConfiguration.class,
-        ManagementWebSecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = "com.bfchengnuo.security")
 @RestController
 @EnableSwagger2
 public class SecurityDemoApplication {

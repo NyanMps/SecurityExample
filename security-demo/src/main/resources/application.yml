@@ -11,3 +11,10 @@ spring:
 #    date-format:
 
 # security.basic.enabled 在 2.x 被废弃，请使用 exclude 的方式进行排除
+
+
+# 自定义的安全设置
+lxl:
+  security:
+    browser:
+      loginPage: "/login-test.html"
