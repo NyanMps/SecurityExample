@@ -24,3 +24,9 @@ By：imooc
 - 统一异常处理。
 - 拦截器与过滤器。
 - 使用 WireMock 伪造 Restful 数据。
+
+> 关于日期格式的定制，如果使用配置文件方式的话，不能存在带 @EnableWebMvc 注解的配置类，否则其作用会被屏蔽。
+> 
+> 复杂情况下，就使用 HttpMessageConverter 进行自定义吧
+>
+> see: https://www.jianshu.com/p/f7e36b0cae41

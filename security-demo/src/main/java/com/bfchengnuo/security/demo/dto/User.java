@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 /**
+ * 日期处理： @DateTimeFormat(pattern="yyyy-MM-dd")
+ * 或者配置 spring.mvc.date-format
+ *
  * @author Created by 冰封承諾Andy on 2019/7/8.
  */
 @Data
