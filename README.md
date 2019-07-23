@@ -30,3 +30,10 @@ By：imooc
 > 复杂情况下，就使用 HttpMessageConverter 进行自定义吧
 >
 > see: https://www.jianshu.com/p/f7e36b0cae41
+
+## SpringSecurity相关
+使用到的功能：
+
+- 自定义登陆方式、页面、必要的配置
+- 自定义密码处理
+- 自定义认证成功、失败后的逻辑

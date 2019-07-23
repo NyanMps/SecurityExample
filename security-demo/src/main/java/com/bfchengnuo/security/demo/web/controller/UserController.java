@@ -6,6 +6,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +70,24 @@ public class UserController {
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
                 .toEpochMilli());
+        return user;
+    }
+
+    /**
+     * 获取当前登陆的用户信息
+     *
+     * 可以通过 SecurityContextHolder.getContext().getAuthentication() 来进行获取
+     * 有条件可以直接注入 Authentication 的方式来获取；
+     * 或者使用 @AuthenticationPrincipal 注解选择性的获取部分信息
+     *
+     * SecurityContextHolder 可以简单理解为一个 ThreadLocal，通过最前端的 {@link org.springframework.security.web.context.SecurityContextPersistenceFilter} 过滤器，
+     * 在每次请求到达时检查 session 是否有登陆信息，有则放到 SecurityContextHolder 中;
+     * 在请求返回时，检查是否存在 SecurityContextHolder，如果存在则放到 session 中。
+     */
+    @GetMapping("/me")
+    public Object getCurrentUser(Authentication authentication,
+                                 @AuthenticationPrincipal UserDetails user) {
+        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
         return user;
     }
 }

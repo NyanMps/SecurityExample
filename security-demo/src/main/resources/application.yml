@@ -18,3 +18,4 @@ lxl:
   security:
     browser:
       loginPage: "/login-test.html"
+      loginType: REDIRECT

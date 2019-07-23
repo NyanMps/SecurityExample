@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * SpringSecurity 配置
@@ -22,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecurityProperties securityProperties;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,6 +41,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/auth")
                 // 进行认证的请求地址（UsernamePasswordAuthenticationFilter）
                 .loginProcessingUrl("/login")
+                // 自定义登陆成功、失败后的处理逻辑
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .authorizeRequests()
                 // 放行必要的页面
