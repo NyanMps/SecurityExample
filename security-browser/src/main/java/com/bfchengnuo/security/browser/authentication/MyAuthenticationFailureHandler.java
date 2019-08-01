@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.browser.authentication;
 
+import com.bfchengnuo.security.browser.support.SimpleResponse;
 import com.bfchengnuo.security.core.properties.LoginType;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +37,7 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.setContentType("application/json;charset=utf-8");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(e));
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(e.getMessage())));
         } else {
             super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
         }

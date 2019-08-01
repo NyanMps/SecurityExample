@@ -1,6 +1,7 @@
 package com.bfchengnuo.security.browser;
 
 import com.bfchengnuo.security.core.properties.SecurityProperties;
+import com.bfchengnuo.security.core.validate.code.ValidateCodeFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * SpringSecurity 配置
@@ -35,8 +37,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 使用表单登陆
-        http.formLogin()
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter(authenticationFailureHandler, securityProperties);
+        // 初始化需要验证的 url set 集合
+        validateCodeFilter.afterPropertiesSet();
+
+        // 增加自定义的验证码校验过滤器
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                // 使用表单登陆
+                .formLogin()
                 // 跳转认证的页面(默认 /login)
                 .loginPage("/auth")
                 // 进行认证的请求地址（UsernamePasswordAuthenticationFilter）
@@ -47,7 +55,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 // 放行必要的页面
-                .antMatchers("/auth", securityProperties.getBrowser().getLoginPage()).permitAll()
+                .antMatchers("/auth",
+                        "/code/image",
+                        "/login",
+                        securityProperties.getBrowser().getLoginPage()).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

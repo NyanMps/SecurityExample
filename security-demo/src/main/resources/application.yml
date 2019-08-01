@@ -18,4 +18,8 @@ lxl:
   security:
     browser:
       loginPage: "/login-test.html"
-      loginType: REDIRECT
+      loginType: JSON
+#      loginType: REDIRECT
+    validateCode:
+      imageCode:
+        expireIn: 60
