@@ -8,15 +8,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * SpringSecurity 配置
- *
+ * <p>
  * 自定义认证规则可以将 {@link org.springframework.security.core.userdetails.UserDetailsService} 的实现注入到 IOC，
  * 或者通过 {@link WebSecurityConfigurerAdapter#configure(AuthenticationManagerBuilder)} 的重载进行配置
  *
@@ -28,11 +34,23 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecurityProperties securityProperties;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 同一个密码每次生成的密文是不一样的（盐的随机）
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        // 基于 JDBC 的 “记住我” 实现
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        // jdbcTokenRepository.setCreateTableOnStartup(true);
+
+        return jdbcTokenRepository;
     }
 
     @Override
@@ -52,6 +70,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 自定义登陆成功、失败后的处理逻辑
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
+                .and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(Math.toIntExact(TimeUnit.HOURS.toSeconds(securityProperties.getBrowser().getRememberMeHour())))
+                .userDetailsService(userDetailsService)
                 .and()
                 .authorizeRequests()
                 // 放行必要的页面

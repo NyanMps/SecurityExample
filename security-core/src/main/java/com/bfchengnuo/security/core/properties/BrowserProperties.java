@@ -11,4 +11,5 @@ import lombok.Data;
 public class BrowserProperties {
     private String loginPage = "/login.html";
     private LoginType loginType = LoginType.JSON;
+    private int rememberMeHour = 24;
 }
