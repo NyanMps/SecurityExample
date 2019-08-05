@@ -11,6 +11,6 @@ public interface ValidateCodeGenerator {
     /**
      * 验证码实现方法接口
      */
-    ImageCode generate(ServletWebRequest request);
+    ValidateCode generate(ServletWebRequest request);
 
  }

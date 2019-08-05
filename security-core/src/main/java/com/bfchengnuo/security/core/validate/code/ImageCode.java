@@ -1,33 +1,22 @@
 package com.bfchengnuo.security.core.validate.code;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.image.BufferedImage;
-import java.time.LocalDateTime;
 
 /**
- * 存储验证码的实体
+ * 图形验证码的实体
  *
  * @author Created by 冰封承諾Andy on 2019/7/25.
  */
-@Data
-@AllArgsConstructor
-public class ImageCode {
+@Getter
+@Setter
+public class ImageCode extends ValidateCode {
     private BufferedImage image;
-    private String code;
-    /**
-     * 过期时间
-     */
-    private LocalDateTime expireTime;
 
     public ImageCode(BufferedImage image, String code, int expireIn4Second) {
+        super(code, expireIn4Second);
         this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn4Second);
-    }
-
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expireTime);
     }
 }

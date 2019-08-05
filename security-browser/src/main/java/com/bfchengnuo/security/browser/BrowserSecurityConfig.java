@@ -1,8 +1,11 @@
 package com.bfchengnuo.security.browser;
 
+import com.bfchengnuo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
+import com.bfchengnuo.security.core.validate.code.SmsCodeFilter;
 import com.bfchengnuo.security.core.validate.code.ValidateCodeFilter;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,19 +26,26 @@ import java.util.concurrent.TimeUnit;
 /**
  * SpringSecurity 配置
  * <p>
- * 自定义认证规则可以将 {@link org.springframework.security.core.userdetails.UserDetailsService} 的实现注入到 IOC，
+ * 自定义认证规则可以将 {@link UserDetailsService} 的实现注入到 IOC，
  * 或者通过 {@link WebSecurityConfigurerAdapter#configure(AuthenticationManagerBuilder)} 的重载进行配置
  *
  * @author Created by 冰封承諾Andy on 2019/7/15.
  */
 @Configuration
-@AllArgsConstructor
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SecurityProperties securityProperties;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
-    private final AuthenticationFailureHandler authenticationFailureHandler;
-    private final DataSource dataSource;
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private SecurityProperties securityProperties;
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private DataSource dataSource;
+    @Qualifier("myUserDetailsService")
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,8 +69,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         // 初始化需要验证的 url set 集合
         validateCodeFilter.afterPropertiesSet();
 
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter(authenticationFailureHandler, securityProperties);
+        smsCodeFilter.afterPropertiesSet();
+
         // 增加自定义的验证码校验过滤器
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 // 使用表单登陆
                 .formLogin()
                 // 跳转认证的页面(默认 /login)
@@ -79,13 +93,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 放行必要的页面
                 .antMatchers("/auth",
-                        "/code/image",
+                        "/code/*",
                         "/login",
+                        "/login/sms",
                         securityProperties.getBrowser().getLoginPage()).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .apply(smsCodeAuthenticationSecurityConfig);
     }
 
     // @Override

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Created by 冰封承諾Andy on 2019/7/15.
  */
-@Component
+@Component("myUserDetailsService")
 @AllArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
