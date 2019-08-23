@@ -1,6 +1,7 @@
 package com.bfchengnuo.security.core.validate.code;
 
 import com.bfchengnuo.security.core.properties.SecurityProperties;
+import com.bfchengnuo.security.core.validate.code.image.ImageCodeGenerator;
 import com.bfchengnuo.security.core.validate.code.sms.DefaultSmsCodeSenderImpl;
 import com.bfchengnuo.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,6 +28,9 @@ public class ValidateCodeBeanConfig {
         return new ImageCodeGenerator(securityProperties);
     }
 
+    /**
+     * 未配置短信发送实现时，使用默认实现
+     */
     @Bean
     @ConditionalOnMissingBean(SmsCodeSender.class)
     public SmsCodeSender smsCodeSender() {

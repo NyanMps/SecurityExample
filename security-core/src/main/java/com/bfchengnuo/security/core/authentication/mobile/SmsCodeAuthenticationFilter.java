@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.core.authentication.mobile;
 
+import com.bfchengnuo.security.core.properties.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,16 +24,14 @@ public class SmsCodeAuthenticationFilter extends
     // ~ Static fields/initializers
     // =====================================================================================
 
-    public static final String SECURITY_FORM_PHONE_KEY = "phone";
-
-    private String phoneParameter = SECURITY_FORM_PHONE_KEY;
+    private String phoneParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE;
     private boolean postOnly = true;
 
     // ~ Constructors
     // ===================================================================================================
 
     public SmsCodeAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/login/sms", "POST"));
+        super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
     }
 
     // ~ Methods

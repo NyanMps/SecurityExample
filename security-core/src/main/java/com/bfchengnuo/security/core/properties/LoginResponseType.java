@@ -5,7 +5,7 @@ package com.bfchengnuo.security.core.properties;
  *
  * @author Created by 冰封承諾Andy on 2019/7/22.
  */
-public enum LoginType {
+public enum LoginResponseType {
     /**
      * 返回 JSON 形式的认证信息
      */

@@ -1,9 +1,10 @@
 package com.bfchengnuo.security.browser;
 
+import com.bfchengnuo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.bfchengnuo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.bfchengnuo.security.core.properties.SecurityConstants;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
-import com.bfchengnuo.security.core.validate.code.SmsCodeFilter;
-import com.bfchengnuo.security.core.validate.code.ValidateCodeFilter;
+import com.bfchengnuo.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,38 +15,36 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
-import java.util.concurrent.TimeUnit;
 
 /**
- * SpringSecurity 配置
- * <p>
+ * SpringSecurity 浏览器配置
+ *
  * 自定义认证规则可以将 {@link UserDetailsService} 的实现注入到 IOC，
- * 或者通过 {@link WebSecurityConfigurerAdapter#configure(AuthenticationManagerBuilder)} 的重载进行配置
+ * 或者通过继承 {@link WebSecurityConfigurerAdapter#configure(AuthenticationManagerBuilder)} 的重载进行配置
  *
  * @author Created by 冰封承諾Andy on 2019/7/15.
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private SecurityProperties securityProperties;
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
+
     @Autowired
     private DataSource dataSource;
+
     @Qualifier("myUserDetailsService")
     @Autowired
     private UserDetailsService userDetailsService;
+
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,43 +64,34 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter(authenticationFailureHandler, securityProperties);
-        // 初始化需要验证的 url set 集合
-        validateCodeFilter.afterPropertiesSet();
+        // 使公共配置生效
+        super.applyPasswordAuthenticationConfig(http);
 
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter(authenticationFailureHandler, securityProperties);
-        smsCodeFilter.afterPropertiesSet();
-
-        // 增加自定义的验证码校验过滤器
-        http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                // 使用表单登陆
-                .formLogin()
-                // 跳转认证的页面(默认 /login)
-                .loginPage("/auth")
-                // 进行认证的请求地址（UsernamePasswordAuthenticationFilter）
-                .loginProcessingUrl("/login")
-                // 自定义登陆成功、失败后的处理逻辑
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
+        http.apply(validateCodeSecurityConfig)
                 .and()
+                .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                // 记住我 配置
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(Math.toIntExact(TimeUnit.HOURS.toSeconds(securityProperties.getBrowser().getRememberMeHour())))
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                // 自定义密码处理
                 .userDetailsService(userDetailsService)
                 .and()
+                // 设置授权要求
                 .authorizeRequests()
-                // 放行必要的页面
-                .antMatchers("/auth",
-                        "/code/*",
-                        "/login",
-                        "/login/sms",
-                        securityProperties.getBrowser().getLoginPage()).permitAll()
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UN_AUTHENTICATION_URL,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                        securityProperties.getBrowser().getLoginPage(),
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
+                // 以上匹配不需要认证
+                .permitAll()
+                // 其他请求需要进行认证
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable()
-                .apply(smsCodeAuthenticationSecurityConfig);
+                .csrf().disable();
     }
 
     // @Override

@@ -1,6 +1,6 @@
 package com.bfchengnuo.security.browser.authentication;
 
-import com.bfchengnuo.security.core.properties.LoginType;
+import com.bfchengnuo.security.core.properties.LoginResponseType;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +48,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 
         // 当访问非 html 并且设置为 JSON 类型是返回 JSON 格式用户信息
         if (!StringUtils.endsWithIgnoreCase(redirectUrl, ".html")
-                && LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
+                && LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             httpServletResponse.setContentType("application/json;charset=utf-8");
             httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
         } else {

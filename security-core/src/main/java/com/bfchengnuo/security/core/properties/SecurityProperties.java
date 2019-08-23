@@ -5,7 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 可配置项的总封装，包含模块有：
- * @see BrowserProperties
+ * @see BrowserProperties 浏览器相关配置
+ * @see ValidateCodeProperties 验证码基本配置
  *
  * @author Created by 冰封承諾Andy on 2019/7/15.
  */

@@ -6,6 +6,6 @@ package com.bfchengnuo.security.core.validate.code.sms;
 public class DefaultSmsCodeSenderImpl implements SmsCodeSender {
     @Override
     public void send(String phone, String code) {
-        System.out.println("发生短信默认为空实现....");
+        System.out.println("向手机" + phone + "发送短信验证码" + code);
     }
 }

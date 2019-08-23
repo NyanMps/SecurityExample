@@ -1,6 +1,7 @@
 package com.bfchengnuo.security.browser;
 
 import com.bfchengnuo.security.browser.support.SimpleResponse;
+import com.bfchengnuo.security.core.properties.SecurityConstants;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,12 @@ public class BrowserSecurityController {
      * SE 在认证时会将原请求缓存进 requestCache
      */
     private RequestCache requestCache = new HttpSessionRequestCache();
+
     /**
      * 重定向工具类
      */
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
     @Resource
     private SecurityProperties securityProperties;
 
@@ -40,10 +43,11 @@ public class BrowserSecurityController {
      * 当需要身份认证时，执行此方法
      * @return 如果是浏览器请求，重定向到认证页面；如果是其他返回 401 状态码提示
      */
-    @RequestMapping("/auth")
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @RequestMapping(SecurityConstants.DEFAULT_UN_AUTHENTICATION_URL)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public SimpleResponse reqAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
+
         if (savedRequest != null) {
             String redirectUrl = savedRequest.getRedirectUrl();
             if (StringUtils.endsWithIgnoreCase(redirectUrl, ".html")) {

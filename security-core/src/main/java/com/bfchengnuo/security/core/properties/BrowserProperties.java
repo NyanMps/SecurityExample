@@ -9,7 +9,9 @@ import lombok.Data;
  */
 @Data
 public class BrowserProperties {
-    private String loginPage = "/login.html";
-    private LoginType loginType = LoginType.JSON;
-    private int rememberMeHour = 24;
+    private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
+
+    private LoginResponseType loginType = LoginResponseType.JSON;
+
+    private int rememberMeSeconds = 3600;
 }
