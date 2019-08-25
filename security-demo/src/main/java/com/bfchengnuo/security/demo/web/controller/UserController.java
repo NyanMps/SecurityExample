@@ -49,7 +49,7 @@ public class UserController {
     @JsonView(User.UserDetailView.class)
     @ApiOperation(value = "查询单个用户")
     public User getInfo(@ApiParam("用户ID") @PathVariable String id) {
-        return new User("1", "name".concat(id), "pwd");
+        return new User("1", "name".concat(id), "pwd", new Date());
     }
 
     @PostMapping

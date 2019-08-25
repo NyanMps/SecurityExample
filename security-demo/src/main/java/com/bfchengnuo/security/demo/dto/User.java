@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import java.util.Date;
 
 /**
  * 日期处理： @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -34,4 +36,8 @@ public class User {
     @MyValidator
     @ApiModelProperty("用户密码")
     private String pwd;
+
+    @JsonView(UserSimpleView.class)
+    @Past(message = "生日必须是过去的时间")
+    private Date birthday;
 }

@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  * PS：只声明 Component 是没有效果的，
  * 还是要在 {@link WebConfig} 进行配置
  *
+ * @see com.bfchengnuo.security.demo.web.filter.TimeFilter
+ * @see com.bfchengnuo.security.demo.web.aspect.TimeAspect
+ *
  * @author Created by 冰封承諾Andy on 2019/7/14.
  */
 @Component

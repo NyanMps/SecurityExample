@@ -7,6 +7,9 @@ spring:
   session:
     store-type: none
 
+server:
+  port: 8080
+
 #  mvc:
 #    date-format:
 
@@ -16,10 +19,10 @@ spring:
 # 自定义的安全设置
 lxl:
   security:
-    browser:
-      loginPage: "/login-test.html"
-      loginType: JSON
+#    browser:
+#      loginPage: "/login-test.html"
+#      loginType: JSON
 #      loginType: REDIRECT
     validateCode:
-      imageCode:
+      image:
         expireIn: 60

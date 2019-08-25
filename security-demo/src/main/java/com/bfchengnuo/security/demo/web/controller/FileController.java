@@ -45,6 +45,7 @@ public class FileController {
 
         response.setContentType("application/x-download");
         response.setHeader("Content-Disposition", "attachment;filename=" + name);
+        // 或者使用 Apache 的 IOUtils.copy(inputStream, outputStream);
         FileCopyUtils.copy(is, os);
         os.flush();
     }

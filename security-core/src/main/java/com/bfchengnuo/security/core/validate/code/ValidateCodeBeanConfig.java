@@ -22,7 +22,7 @@ public class ValidateCodeBeanConfig {
     /**
      * 未配置时默认使用图形验证码
      */
-    @Bean
+    @Bean("imageValidateCodeGenerator")
     @ConditionalOnMissingBean(ImageCodeGenerator.class)
     public ValidateCodeGenerator imageCodeGenerator(SecurityProperties securityProperties) {
         return new ImageCodeGenerator(securityProperties);

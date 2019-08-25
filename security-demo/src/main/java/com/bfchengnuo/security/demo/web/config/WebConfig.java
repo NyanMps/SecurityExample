@@ -30,9 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
     private final TimeInterceptor timeInterceptor;
 
     /**
-     * 配置过滤器
+     * 配置、注册过滤器
      */
-    @Bean
+    // @Bean
     public FilterRegistrationBean timeFilter() {
         FilterRegistrationBean<TimeFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         TimeFilter timeFilter = new TimeFilter();
@@ -46,9 +46,12 @@ public class WebConfig implements WebMvcConfigurer {
         return filterRegistrationBean;
     }
 
+    /**
+     * 注册拦截器
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(timeInterceptor);
+        // registry.addInterceptor(timeInterceptor);
     }
 
     /**

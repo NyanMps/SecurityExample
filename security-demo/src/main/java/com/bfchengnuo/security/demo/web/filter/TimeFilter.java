@@ -11,6 +11,9 @@ import java.io.IOException;
  * 如有条件，可以使用 @Component 注解，当无法使用 @Component 注解时，
  * 可以参考 {@link WebConfig} 的配置
  *
+ * @see com.bfchengnuo.security.demo.web.interceptor.TimeInterceptor
+ * @see com.bfchengnuo.security.demo.web.aspect.TimeAspect
+ *
  * @author Created by 冰封承諾Andy on 2019/7/14.
  */
 public class TimeFilter implements Filter {
