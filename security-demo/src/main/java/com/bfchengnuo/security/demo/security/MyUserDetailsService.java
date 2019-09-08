@@ -1,4 +1,4 @@
-package com.bfchengnuo.security.browser;
+package com.bfchengnuo.security.demo.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -7,17 +7,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SocialUser;
 import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.stereotype.Component;
 
 /**
  * 自定义处理用户登陆的逻辑
  *
- * 实现用户信息的获取应该是业务系统，不应该放在 browser 模块下，可参考 demo 模块下
- *
- * @author Created by 冰封承諾Andy on 2019/7/15.
+ * @author 冰封承諾Andy
+ * @date 2019-09-08
  */
-// @Component("myUserDetailsService")
+@Component("myUserDetailsService")
 @AllArgsConstructor
 public class MyUserDetailsService implements UserDetailsService, SocialUserDetailsService {
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +35,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 
     @Override
     public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
-        return null;
+        String pwd = passwordEncoder.encode("123123");
+        return new SocialUser(userId, pwd, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }

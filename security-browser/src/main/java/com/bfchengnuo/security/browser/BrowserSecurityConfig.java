@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -46,6 +47,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    /**
+     * 社交第三方登陆的配置类
+     */
+    @Autowired
+    private SpringSocialConfigurer springSocialConfigurer;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 同一个密码每次生成的密文是不一样的（盐的随机）
@@ -70,6 +77,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         http.apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(springSocialConfigurer)
                 .and()
                 // 记住我 配置
                 .rememberMe()

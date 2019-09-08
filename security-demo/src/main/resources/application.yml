@@ -26,3 +26,7 @@ lxl:
     validateCode:
       image:
         expireIn: 60
+    social:
+      qq:
+        app-id: xxx
+        app-secret: xxx
