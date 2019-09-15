@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.core.social;
 
+import com.bfchengnuo.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         // 自定义数据仓储，这里设置不加密数据
@@ -46,6 +50,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
      */
     @Bean
     public SpringSocialConfigurer imoocSocialSecurityConfig() {
-        return new SpringSocialConfigurer();
+        String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
+        CustomizeSpringSocialConfigurer customizeSpringSocialConfigurer = new CustomizeSpringSocialConfigurer(filterProcessesUrl);
+        return customizeSpringSocialConfigurer;
     }
 }

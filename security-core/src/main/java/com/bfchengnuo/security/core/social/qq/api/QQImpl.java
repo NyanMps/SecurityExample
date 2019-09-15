@@ -9,6 +9,9 @@ import org.springframework.social.oauth2.TokenStrategy;
  * 所有的 Api 实现类都要继承 {@link AbstractOAuth2ApiBinding}
  * 每一个用户都有一个独立的实现类对象，在 {@link AbstractOAuth2ApiBinding accessToken} 的 accessToken 来保存令牌信息
  *
+ * @see com.bfchengnuo.security.core.social.qq.connect.QQServiceProvider 创建此对象的"人"，使用 template 来获取 accessToken
+ * @see com.bfchengnuo.security.core.social.qq.connect.QQAdapter 调用其方法的对象，获取 openid 成功后会以此来换取用户信息
+ *
  * @author 冰封承諾Andy
  * @date 2019-09-01
  */

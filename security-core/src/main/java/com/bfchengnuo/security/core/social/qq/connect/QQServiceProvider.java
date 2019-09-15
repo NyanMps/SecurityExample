@@ -23,7 +23,8 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
     private static final String URL_ACCESS_TOKEN = "https://graph.qq.com/oauth2.0/token";
 
     public QQServiceProvider(String appId, String appSecret) {
-        // 可以使用默认实现 OAuth2Template
+        // 可以使用默认实现 OAuth2Template，但是默认当规则一般不适用
+        // 执行第一个步骤，获取 AuthorizationCode
         super(new QQOAuth2Template(appId, appSecret, URL_AUTHORIZE, URL_ACCESS_TOKEN));
         this.appId = appId;
     }
