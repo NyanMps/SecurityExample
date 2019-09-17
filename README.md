@@ -83,13 +83,74 @@ PS：不管是图形验证码还是短信验证码，他们到验证肯定是要
 资源所有者，也就是用户，去访问客户端的服务，然后客户端需要获取其他应用（服务提供商）中的用户数据，所以客户端会向用户请求授权，用户同意后，服务提供商会发放一个有效期的令牌给客户端（用户同意操作在服务提供商完成）；
 之后客户端可以拿着这个令牌去资源服务器获取资源，资源服务器会验证这个令牌的合法性，通过即可返回需要的资源。
 
-其中，最重要的就是用户同意这个步骤了，同意后如何获取令牌，一般我们采用的也就是授权码模式和密码模式，其中授权码模式最为广泛。
+其中，最重要的就是用户同意这个步骤了，同意后如何获取令牌，一般我们采用的也就是授权码模式(Authorization Code)和客户端模式(Client Credentials)，其中授权码模式最为广泛（更加安全）。
 流程：
 
 需要授权时，客户端会将用户导向服务提供商的认证服务器，用户需要在认证服务器上完成同意授权，然后认证服务器会返回一个授权码，一般是将这个授权码返回到客户端的后台，然后客户端的后台根据这个授权码再去认证服务器换取令牌；
 这样令牌就拿到了，整个过程需要两步，认证服务器也能通过导向的连接携带的参数来确定是那个客户端需要授权；
 这样不直接返回令牌而是授权码大大加强来应用间的安全性。
 
+## social
+
+> 因为 social 项目调整，在 Spring2.x 版本中，将相关源码进行了去除，如果使用到了相关到类，只能手动补全
+>
+>参见：https://www.jianshu.com/p/e6de152a0b4e
+
+基本原理：
+social 封装了绝大部分的 OAuth 协议步骤，其中根据令牌获取用户信息的实现各不相同只能由用户来提供，其中涉及的 URL 以及必要的参数也要由用户提供；
+基本的组成部分可以概括为：
+
+- ServiceProvider
+    必须继承 AbstractOAuth2ApiBinding 类；
+    它包含 OAuth2Template 这个默认实现和 Api（AbstractOAuth2ApiBinding）
+- ConnectionFactory
+    提供的默认实现：
+    包含 ServiceProvider 和 ApiAdapter（负责将服务提供商个性化的格式转换为 social 通用的格式）
+- Connection
+- UsersConnectionRepository
+
+最终的目的就是获得某用户的 Connection，然后通过数据库来获取相关的信息；
+想要得到 Connection 就需要 ConnectionFactory，而创建工厂需要 ServiceProvider 和 ApiAdapter；
+其中有一些是 social 给我们提供了的，剩下的就需要我们自己实现了。
+
+### QQ登陆
+首先，入口还是关键的过滤器，配置在 SocialConfig 类，最终通过其他模块的 apply 进行正式添加到过滤链中；
+
+然后，通过 QQAutoConfig 会自动配置 ConnectionFactory，通过工厂就引入了 Provider 和 Adapter；
+
+即：通过 Provider 的 template 使用密钥换取 accessToken，然后通过 QQImpl 来用 accessToken 换取 openid，最终通过 Adapter 使用 openid 来换取用户信息。
+
+QQ 这里我们使用的是授权码模式，获取 accessToken 需要两步，具体可参考下面的文档。
+
+首先是使用客户端 id 换取 AuthorizationCode 然后再用它换取 accessToken，然后再换取 openid，最后用 openid 换取用户信息。
+
+[QQ 互联文档](https://wiki.connect.qq.com/使用authorization_code获取access_token)
+
+[备用地址](http://wiki.open.qq.com/wiki/website/%E4%BD%BF%E7%94%A8Authorization_Code%E8%8E%B7%E5%8F%96Access_Token)
+
+https://www.jianshu.com/p/b06944c92228
+
 ## 关于测试
 在测试模块，使用到了 SpringMock 的相关支持，方便用来解析 RESTful 返回的 JSON 串；
 其中用到了 JsonPath 的一些语法，感兴趣的可以去看一下。
+
+## 其他
+
+数据库所必要的表（存储 OAuth 登陆的用户信息）：
+```sql
+create table UserConnection (userId varchar(255) not null,
+	providerId varchar(255) not null,
+	providerUserId varchar(255),
+	rank int not null,
+	displayName varchar(255),
+	profileUrl varchar(512),
+	imageUrl varchar(512),
+	accessToken varchar(512) not null,
+	secret varchar(512),
+	refreshToken varchar(512),
+	expireTime bigint,
+	primary key (userId, providerId, providerUserId));
+create unique index UserConnectionRank on UserConnection(userId, providerId, rank);
+```
+
+参考 JdbcUsersConnectionRepository 类所在目录。
