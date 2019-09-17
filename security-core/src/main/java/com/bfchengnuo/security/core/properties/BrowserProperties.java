@@ -14,4 +14,9 @@ public class BrowserProperties {
     private LoginResponseType loginType = LoginResponseType.JSON;
 
     private int rememberMeSeconds = 3600;
+
+    /**
+     * 社交登录，如果需要用户注册，跳转的页面
+     */
+    private String signUpUrl = "/signUp.html";
 }

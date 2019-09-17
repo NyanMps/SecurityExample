@@ -19,7 +19,8 @@ server:
 # 自定义的安全设置
 lxl:
   security:
-#    browser:
+    browser:
+      signUpUrl: demo-signUp.html
 #      loginPage: "/login-test.html"
 #      loginType: JSON
 #      loginType: REDIRECT

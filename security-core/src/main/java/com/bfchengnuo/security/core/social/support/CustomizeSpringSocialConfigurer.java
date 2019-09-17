@@ -1,4 +1,4 @@
-package com.bfchengnuo.security.core.social;
+package com.bfchengnuo.security.core.social.support;
 
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;

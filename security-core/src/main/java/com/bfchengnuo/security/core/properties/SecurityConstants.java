@@ -50,4 +50,9 @@ public class SecurityConstants {
      * 发送短信验证码 或 验证短信验证码时，传递手机号的参数的名称
      */
     public static final String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
+
+    /**
+     * 获取第三方用户信息的 url
+     */
+    public static final String DEFAULT_SOCIAL_USER_INFO_URL = "/social/user";
 }
