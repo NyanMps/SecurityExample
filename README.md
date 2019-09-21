@@ -130,6 +130,15 @@ QQ 这里我们使用的是授权码模式，获取 accessToken 需要两步，�
 
 https://www.jianshu.com/p/b06944c92228
 
+### 绑定与解绑
+social 提供了一个 controller 来处理相关数据，但是没有提供相应的视图，具体的类是 org.springframework.social.connect.web.ConnectController；
+它处理以 `/connect` 开头的请求，默认即返回绑定信息。
+
+默认它返回叫 `connect/status` 的视图，并且会把绑定数据进行填充。 
+
+使用 post 访问 `/connect/{providerId}` 即可进行绑定操作，使用 delete 方式请求就是解绑操作 。
+
+
 ## 关于测试
 在测试模块，使用到了 SpringMock 的相关支持，方便用来解析 RESTful 返回的 JSON 串；
 其中用到了 JsonPath 的一些语法，感兴趣的可以去看一下。
