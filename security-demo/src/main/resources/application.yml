@@ -31,4 +31,7 @@ lxl:
       qq:
         app-id: xxx
         app-secret: xxx
+      wx:
+        app-id: xxx
+        app-secret: xxx
       filterProcessesUrl: /auth
