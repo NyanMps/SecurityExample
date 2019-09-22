@@ -5,6 +5,7 @@ spring:
     username: loli
     password: 12358
   session:
+    # 可以使用 redis 来管理 session
     store-type: none
 
 server:

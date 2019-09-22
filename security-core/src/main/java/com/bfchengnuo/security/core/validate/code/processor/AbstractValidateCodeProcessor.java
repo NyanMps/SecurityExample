@@ -103,12 +103,14 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
     /**
      * 保存校验码到 Session
+     * 为了兼容 Redis 方案，需要对象可序列化，这里只存校验码和过期时间
      *
      * @param request 请求对象
      * @param validateCode 泛型指定的验证码实体
      */
     private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, getSessionKey(request), validateCode);
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, getSessionKey(request), code);
     }
 
     /**
