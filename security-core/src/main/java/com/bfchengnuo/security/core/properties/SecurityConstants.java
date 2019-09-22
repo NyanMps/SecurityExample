@@ -14,8 +14,6 @@ public class SecurityConstants {
 
     /**
      * 当请求需要身份认证时，默认跳转的url
-     *
-     * @see SecurityController
      */
     public static final String DEFAULT_UN_AUTHENTICATION_URL = "/authentication/require";
 
@@ -31,8 +29,6 @@ public class SecurityConstants {
 
     /**
      * 默认登录页面
-     *
-     * @see SecurityController
      */
     public static final String DEFAULT_LOGIN_PAGE_URL = "/login.html";
 
@@ -55,4 +51,9 @@ public class SecurityConstants {
      * 获取第三方用户信息的 url
      */
     public static final String DEFAULT_SOCIAL_USER_INFO_URL = "/social/user";
+
+    /**
+     * session 失效默认的跳转地址
+     */
+    public static final String DEFAULT_SESSION_INVALID_URL = "/session-invalid.html";
 }
