@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.browser;
 
+import com.bfchengnuo.security.browser.logout.CustomizeLogoutSuccessHandler;
 import com.bfchengnuo.security.browser.session.CustomizeExpiredSessionStrategy;
 import com.bfchengnuo.security.browser.session.CustomizeInvalidSessionStrategy;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
@@ -40,5 +42,12 @@ public class BrowserSecurityBeanConfig {
         return new CustomizeExpiredSessionStrategy(securityProperties);
     }
 
-
+    /**
+     * 退出时的处理策略配置
+     */
+    @Bean
+    @ConditionalOnMissingBean(LogoutSuccessHandler.class)
+    public LogoutSuccessHandler logoutSuccessHandler(){
+        return new CustomizeLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());
+    }
 }

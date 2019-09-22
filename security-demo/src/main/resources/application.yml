@@ -27,6 +27,7 @@ lxl:
   security:
     browser:
       signUpUrl: demo-signUp.html
+      signOutUrl: demo-logout.html
 #      loginPage: "/login-test.html"
 #      loginType: JSON
 #      loginType: REDIRECT

@@ -136,8 +136,13 @@ social 提供了一个 controller 来处理相关数据，但是没有提供相�
 
 默认它返回叫 `connect/status` 的视图，并且会把绑定数据进行填充。 
 
-使用 post 访问 `/connect/{providerId}` 即可进行绑定操作，使用 delete 方式请求就是解绑操作 。
+使用 post 访问 `/connect/{providerId}` 即可进行绑定操作，使用 delete 方式请求就是解绑操作。
 
+### 退出
+退出也是类似，默认提供的路径为：`/signOut`； 
+退出逻辑：
+使当前 session 失效，清除用户相关的"记住我"信息，清除当前的 SecurityContext，最终跳转到登陆页。
+这些是可以进行自定义配置的。
 
 ## 关于测试
 在测试模块，使用到了 SpringMock 的相关支持，方便用来解析 RESTful 返回的 JSON 串；
