@@ -14,9 +14,14 @@
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>com.bfchengnuo.security</groupId>-->
+<!--            <artifactId>security-browser</artifactId>-->
+<!--            <version>${security-version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.bfchengnuo.security</groupId>
-            <artifactId>security-browser</artifactId>
+            <artifactId>security-app</artifactId>
             <version>${security-version}</version>
         </dependency>
 

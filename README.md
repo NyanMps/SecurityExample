@@ -144,6 +144,13 @@ social 提供了一个 controller 来处理相关数据，但是没有提供相�
 使当前 session 失效，清除用户相关的"记住我"信息，清除当前的 SecurityContext，最终跳转到登陆页。
 这些是可以进行自定义配置的。
 
+## OAuth认证服务
+使用 `@EnableAuthorizationServer` 开启认证服务器后，默认授权码模式、密码模式用到的地址为：
+/oauth/authorize
+/oauth/token
+
+同样，资源服务器也是通过一个注解 `@EnableResourceServer` 开启，详细的流程我另外整理到了笔记中，~~稍后~~会发到博客。
+
 ## 关于测试
 在测试模块，使用到了 SpringMock 的相关支持，方便用来解析 RESTful 返回的 JSON 串；
 其中用到了 JsonPath 的一些语法，感兴趣的可以去看一下。

@@ -30,12 +30,12 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
         System.out.println("PWD：" + pwd);
         // 简单实现
         return new User(username, pwd,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
     }
 
     @Override
     public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
         String pwd = passwordEncoder.encode("123123");
-        return new SocialUser(userId, pwd, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new SocialUser(userId, pwd, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
     }
 }
