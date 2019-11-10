@@ -63,7 +63,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
      * @return 配置类对象
      */
     @Bean
-    public SpringSocialConfigurer imoocSocialSecurityConfig() {
+    public SpringSocialConfigurer springSocialSecurityConfig() {
         String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
         CustomizeSpringSocialConfigurer customizeSpringSocialConfigurer = new CustomizeSpringSocialConfigurer(filterProcessesUrl);
         // 找不到用户时，跳转到指定的注册（绑定）页面
