@@ -1,5 +1,7 @@
 package com.bfchengnuo.security.core.social.support;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
 
@@ -14,6 +16,10 @@ import org.springframework.social.security.SpringSocialConfigurer;
  * @date 2019-09-10
  */
 public class CustomizeSpringSocialConfigurer extends SpringSocialConfigurer {
+    @Getter
+    @Setter
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
     private String filterProcessesUrl;
 
     public CustomizeSpringSocialConfigurer(String filterProcessesUrl) {
@@ -24,6 +30,11 @@ public class CustomizeSpringSocialConfigurer extends SpringSocialConfigurer {
     protected <T> T postProcess(T object) {
         SocialAuthenticationFilter filter = (SocialAuthenticationFilter) super.postProcess(object);
         filter.setFilterProcessesUrl(filterProcessesUrl);
+
+        // 是否配置了后处理器
+        if (socialAuthenticationFilterPostProcessor != null) {
+            socialAuthenticationFilterPostProcessor.process(filter);
+        }
         return (T) filter;
     }
 }

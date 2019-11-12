@@ -2,6 +2,7 @@ package com.bfchengnuo.security.core.social;
 
 import com.bfchengnuo.security.core.properties.SecurityProperties;
 import com.bfchengnuo.security.core.social.support.CustomizeSpringSocialConfigurer;
+import com.bfchengnuo.security.core.social.support.SocialAuthenticationFilterPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
 
+    @Autowired(required = false)
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         // 自定义数据仓储，这里设置不加密数据
@@ -68,6 +72,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
         CustomizeSpringSocialConfigurer customizeSpringSocialConfigurer = new CustomizeSpringSocialConfigurer(filterProcessesUrl);
         // 找不到用户时，跳转到指定的注册（绑定）页面
         customizeSpringSocialConfigurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+        customizeSpringSocialConfigurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         return customizeSpringSocialConfigurer;
     }
 

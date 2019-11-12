@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.app.server;
 
+import com.bfchengnuo.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.bfchengnuo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.bfchengnuo.security.core.properties.SecurityConstants;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
@@ -42,6 +43,12 @@ public class CustomizeResourceServerConfig extends ResourceServerConfigurerAdapt
     @Autowired
     private SpringSocialConfigurer springSocialConfigurer;
 
+    /**
+     * 用于 App 使用 openid 进行第三方登陆
+     */
+    @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
+
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -55,12 +62,10 @@ public class CustomizeResourceServerConfig extends ResourceServerConfigurerAdapt
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler);
 
-        http.apply(validateCodeSecurityConfig)
-                .and()
-                .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
-                .apply(springSocialConfigurer)
-                .and()
+        http.apply(validateCodeSecurityConfig).and()
+                .apply(smsCodeAuthenticationSecurityConfig).and()
+                .apply(springSocialConfigurer).and()
+                .apply(openIdAuthenticationSecurityConfig).and()
                 // 设置授权要求
                 .authorizeRequests()
                 .antMatchers(
