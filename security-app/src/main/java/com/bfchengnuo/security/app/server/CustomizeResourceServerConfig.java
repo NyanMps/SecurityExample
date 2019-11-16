@@ -31,6 +31,7 @@ public class CustomizeResourceServerConfig extends ResourceServerConfigurerAdapt
     @Autowired
     private SecurityProperties securityProperties;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
@@ -75,7 +76,7 @@ public class CustomizeResourceServerConfig extends ResourceServerConfigurerAdapt
                         securityProperties.getBrowser().getSignUpUrl(),
                         securityProperties.getBrowser().getSignOutUrl(),
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        "/user/register",
+                        "/user/register", "/social/signUp",
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
                 // 以上匹配不需要认证
                 .permitAll()

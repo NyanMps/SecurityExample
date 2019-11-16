@@ -1,5 +1,6 @@
 package com.bfchengnuo.security.demo.web.controller;
 
+import com.bfchengnuo.security.app.social.AppSingUpUtils;
 import com.bfchengnuo.security.demo.dto.User;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,7 @@ import java.util.Objects;
 @RequestMapping("/user")
 public class UserController {
     private final ProviderSignInUtils providerSignInUtils;
+    private final AppSingUpUtils appSingUpUtils;
 
     @GetMapping()
     @JsonView(User.UserSimpleView.class)
@@ -103,6 +105,7 @@ public class UserController {
         //不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
         String userName = user.getUserName();
         // 信息插入到 social 数据库，第一个参数其实是 userID，唯一即可
-        providerSignInUtils.doPostSignUp(userName, new ServletWebRequest(request));
+        // providerSignInUtils.doPostSignUp(userName, new ServletWebRequest(request));
+        appSingUpUtils.doPostSignUp(new ServletWebRequest(request), userName);
     }
 }
