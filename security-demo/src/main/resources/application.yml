@@ -30,6 +30,11 @@ security:
 # 自定义的安全设置
 lxl:
   security:
+    oauth2:
+      clients:
+        - clientId: "cid"
+          clientSecret: "cse"
+          accessTokenValidateSeconds: 3600
     browser:
       signUpUrl: demo-signUp.html
       signOutUrl: demo-logout.html
