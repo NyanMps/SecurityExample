@@ -1,11 +1,15 @@
 package com.bfchengnuo.security.demo.web.controller;
 
 import com.bfchengnuo.security.app.social.AppSingUpUtils;
+import com.bfchengnuo.security.core.properties.SecurityProperties;
 import com.bfchengnuo.security.demo.dto.User;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ import java.util.Objects;
 public class UserController {
     private final ProviderSignInUtils providerSignInUtils;
     private final AppSingUpUtils appSingUpUtils;
+    private final SecurityProperties securityProperties;
 
     @GetMapping()
     @JsonView(User.UserSimpleView.class)
@@ -97,6 +103,22 @@ public class UserController {
     public Object getCurrentUser(Authentication authentication,
                                  @AuthenticationPrincipal UserDetails user) {
         Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+        return user;
+    }
+
+    @GetMapping("/jwtInfo")
+    public Object jwtInfo(Authentication user, HttpServletRequest request) {
+        // 获取 JWT 串
+        String token = StringUtils.substringAfter(request.getHeader("Authorization"), "bearer ");
+
+        // 解析 - 通过密钥
+        Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token).getBody();
+
+        String company = (String) claims.get("name");
+
+        System.out.println(company);
+
         return user;
     }
 

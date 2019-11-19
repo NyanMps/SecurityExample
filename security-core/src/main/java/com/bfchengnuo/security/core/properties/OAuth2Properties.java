@@ -8,5 +8,9 @@ import lombok.Data;
  */
 @Data
 public class OAuth2Properties {
+    /**
+     * JWT 的签名，密签与验签的时候用，配置文件配置，这里是默认值
+     */
+    private String jwtSigningKey = "lxl";
     private OAuth2ClientProperties[] clients = {};
 }
