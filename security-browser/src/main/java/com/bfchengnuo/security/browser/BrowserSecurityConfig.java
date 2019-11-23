@@ -2,7 +2,7 @@ package com.bfchengnuo.security.browser;
 
 import com.bfchengnuo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.bfchengnuo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
-import com.bfchengnuo.security.core.properties.SecurityConstants;
+import com.bfchengnuo.security.core.authorize.AuthorizeConfigManager;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
 import com.bfchengnuo.security.core.validate.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +57,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
+
     /**
      * 社交第三方登陆的配置类
      */
@@ -109,24 +112,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                     .logoutSuccessHandler(logoutSuccessHandler)
                     .deleteCookies("JSESSIONID")
                     .and()
-                // 设置授权要求
-                .authorizeRequests()
-                .antMatchers(
-                        SecurityConstants.DEFAULT_UN_AUTHENTICATION_URL,
-                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                        securityProperties.getBrowser().getLoginPage(),
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        "/user/register",
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*")
-                // 以上匹配不需要认证
-                .permitAll()
-                // 其他请求需要进行认证
-                .anyRequest()
-                .authenticated()
-                .and()
                 .csrf().disable();
+
+        // 设置权限
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 
     // @Override

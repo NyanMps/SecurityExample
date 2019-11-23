@@ -175,3 +175,5 @@ create unique index UserConnectionRank on UserConnection(userId, providerId, ran
 ```
 
 参考 JdbcUsersConnectionRepository 类所在目录。
+
+原项目代码参考：https://github.com/jojozhai/security
