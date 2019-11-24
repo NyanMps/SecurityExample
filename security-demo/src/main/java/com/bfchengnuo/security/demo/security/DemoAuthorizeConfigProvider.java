@@ -14,12 +14,16 @@ import org.springframework.stereotype.Component;
 @Order(Integer.MAX_VALUE)
 public class DemoAuthorizeConfigProvider implements AuthorizeConfigProvider {
     @Override
-    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
+    public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
         config.antMatchers("/user/register", "/social/signUp")
                 // 以上匹配不需要认证
                 .permitAll();
 
         config.antMatchers("/demo.html")
                 .hasRole("ADMIN");
+
+        // 自定义校验
+        config.anyRequest().access("@rbacService.hasPermission(request, authentication)");
+        return true;
     }
 }

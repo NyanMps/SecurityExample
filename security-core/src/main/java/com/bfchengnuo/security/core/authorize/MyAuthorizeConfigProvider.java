@@ -2,6 +2,7 @@ package com.bfchengnuo.security.core.authorize;
 
 import com.bfchengnuo.security.core.properties.SecurityConstants;
 import com.bfchengnuo.security.core.properties.SecurityProperties;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +23,7 @@ public class MyAuthorizeConfigProvider implements AuthorizeConfigProvider {
     private SecurityProperties securityProperties;
 
     @Override
-    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
+    public boolean config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
         config.antMatchers(
                 SecurityConstants.DEFAULT_UN_AUTHENTICATION_URL,
                 SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
@@ -30,8 +31,12 @@ public class MyAuthorizeConfigProvider implements AuthorizeConfigProvider {
                 SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                 securityProperties.getBrowser().getLoginPage(),
                 securityProperties.getBrowser().getSignUpUrl(),
-                securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                securityProperties.getBrowser().getSignOutUrl())
+                securityProperties.getBrowser().getSession().getSessionInvalidUrl())
                 .permitAll();
+
+        if (StringUtils.isNotBlank(securityProperties.getBrowser().getSignOutUrl())) {
+            config.antMatchers(securityProperties.getBrowser().getSignOutUrl()).permitAll();
+        }
+        return false;
     }
 }
